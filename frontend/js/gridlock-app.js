@@ -395,21 +395,69 @@ function bindScenariosPage() {
 
 let hotspotsBound = false;
 
+function hotspotRiskClasses(pct) {
+  if (pct > 70) {
+    return { dot: "bg-error", text: "text-error", bar: "bg-error" };
+  }
+  if (pct > 40) {
+    return { dot: "bg-tertiary", text: "text-tertiary", bar: "bg-tertiary" };
+  }
+  return { dot: "bg-secondary", text: "text-secondary", bar: "bg-secondary" };
+}
+
 function bindHotspotsPage() {
   const slider = document.getElementById("gl-hour-slider");
-  const hour = parseInt(slider?.value || "18", 10);
-  fetch(apiUrl(`/api/hotspots?hour=${hour}&top_n=8`)).then((r) => r.json()).then((data) => {
-    const list = document.getElementById("gl-hotspot-list");
-    if (!list) return;
-    list.innerHTML = (data.hotspots || []).map((h) => {
-      const pct = h.risk_score;
-      const color = pct > 70 ? "error" : pct > 40 ? "tertiary" : "secondary";
-      return `<tr class="data-row border-b border-[rgba(255,255,255,0.04)]"><td class="p-3 font-body-sm text-body-sm text-on-surface flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-${color}"></div>${h.corridor}</td><td class="p-3 text-right"><span class="font-mono-data text-${color} font-bold">${pct}%</span></td><td class="p-3"><div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden"><div class="bg-${color} h-full" style="width:${pct}%"></div></div></td><td class="p-3 text-right font-mono-data text-on-surface-variant">~${h.expected_events} events</td></tr>`;
-    }).join("") || '<tr><td colspan="4" class="p-4 text-on-surface-variant">No hotspots for this hour</td></tr>';
-    document.querySelectorAll("#gl-hour-label").forEach((el) => { el.textContent = `${hour}:00`; });
-  });
-  if (slider && !hotspotsBound) {
-    slider.addEventListener("input", bindHotspotsPage);
+  const forecastSlider = document.getElementById("forecast-slider");
+  const hour = parseInt(slider?.value || forecastSlider?.value || "18", 10);
+
+  if (slider) slider.value = String(hour);
+  if (forecastSlider) forecastSlider.value = String(hour);
+
+  fetch(apiUrl(`/api/hotspots?hour=${hour}&top_n=8`))
+    .then((r) => {
+      if (!r.ok) throw new Error(`Hotspots API failed (${r.status})`);
+      return r.json();
+    })
+    .then((data) => {
+      const list = document.getElementById("gl-hotspot-list");
+      if (!list) return;
+      const rows = data.hotspots || [];
+      list.innerHTML = rows.length
+        ? rows.map((h) => {
+            const pct = h.risk_score;
+            const c = hotspotRiskClasses(pct);
+            return `<tr class="data-row border-b border-[rgba(255,255,255,0.04)]">
+              <td class="p-3 font-body-sm text-body-sm text-on-surface">
+                <span class="inline-flex items-center gap-3">
+                  <span class="w-2 h-2 rounded-full ${c.dot}"></span>${h.corridor}
+                </span>
+              </td>
+              <td class="p-3 text-right"><span class="font-mono-data ${c.text} font-bold">${pct}%</span></td>
+              <td class="p-3"><div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden"><div class="${c.bar} h-full" style="width:${Math.min(pct, 100)}%"></div></div></td>
+              <td class="p-3 text-right font-mono-data text-on-surface-variant">~${h.expected_events} events</td>
+            </tr>`;
+          }).join("")
+        : '<tr><td colspan="4" class="p-4 text-on-surface-variant">No hotspots for this hour</td></tr>';
+      document.querySelectorAll("#gl-hour-label").forEach((el) => {
+        el.textContent = `${hour}:00`;
+      });
+      const timeDisplay = document.getElementById("time-display");
+      if (timeDisplay) timeDisplay.textContent = `T+00:00 (${hour}:00 Local)`;
+    })
+    .catch((err) => {
+      console.error(err);
+      const list = document.getElementById("gl-hotspot-list");
+      if (list) {
+        list.innerHTML = `<tr><td colspan="4" class="p-4 text-error">Failed to load hotspots: ${err.message}</td></tr>`;
+      }
+    });
+
+  if (!hotspotsBound) {
+    slider?.addEventListener("input", bindHotspotsPage);
+    forecastSlider?.addEventListener("input", () => {
+      if (slider && forecastSlider) slider.value = forecastSlider.value;
+      bindHotspotsPage();
+    });
     hotspotsBound = true;
   }
 }
@@ -437,20 +485,26 @@ function bindLearningPage() {
 }
 
 async function boot() {
+  const page = window.GRIDLOCK_PAGE || "command";
   try {
     await loadData();
-    activeIndex = Math.min(getSavedIndex(), scenarios.length - 1);
-    const page = window.GRIDLOCK_PAGE || "command";
-    if (page === "command") bindCommandPage();
-    if (page === "map") bindMapPage();
-    if (page === "scenarios") bindScenariosPage();
-    if (page === "hotspots") bindHotspotsPage();
-    if (page === "analytics") bindAnalyticsPage();
-    if (page === "learning") bindLearningPage();
+    activeIndex = Math.min(getSavedIndex(), Math.max(scenarios.length - 1, 0));
   } catch (e) {
     console.error(e);
-    document.body.insertAdjacentHTML("afterbegin", `<div class="fixed top-20 left-1/2 -translate-x-1/2 z-[9999] bg-error-container text-on-error-container px-4 py-2 rounded-lg">${e.message}</div>`);
+    const standalone = ["hotspots", "analytics", "learning"].includes(page);
+    if (!standalone) {
+      document.body.insertAdjacentHTML(
+        "afterbegin",
+        `<div class="fixed top-20 left-1/2 -translate-x-1/2 z-[9999] bg-error-container text-on-error-container px-4 py-2 rounded-lg">${e.message}</div>`
+      );
+    }
   }
+  if (page === "command") bindCommandPage();
+  if (page === "map") bindMapPage();
+  if (page === "scenarios") bindScenariosPage();
+  if (page === "hotspots") bindHotspotsPage();
+  if (page === "analytics") bindAnalyticsPage();
+  if (page === "learning") bindLearningPage();
 }
 
 document.addEventListener("DOMContentLoaded", boot);
