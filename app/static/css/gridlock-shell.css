@@ -125,3 +125,58 @@ body.gl-shell .mt-16 {
   background: #424754;
   border-radius: 6px;
 }
+
+/* Hotspots page */
+#gl-hotspots-map {
+  z-index: 1;
+  min-height: 360px;
+}
+
+.gl-hotspots-page {
+  padding-bottom: 2rem;
+}
+
+.gl-hour-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 28px;
+  margin: 0;
+}
+
+.gl-hour-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #adc6ff;
+  border: 2px solid #10131a;
+  box-shadow: 0 0 12px rgba(173, 198, 255, 0.55);
+  cursor: pointer;
+}
+
+.gl-hour-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #adc6ff;
+  border: 2px solid #10131a;
+  cursor: pointer;
+}
+
+.gl-hotspot-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  font-weight: 700;
+  font-size: 11px;
+  color: #10131a;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.45);
+}
+
+.glass-panel {
+  background: rgba(16, 19, 26, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

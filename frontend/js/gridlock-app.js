@@ -394,24 +394,105 @@ function bindScenariosPage() {
 }
 
 let hotspotsBound = false;
+let hotspotMap = null;
+let hotspotLayer = null;
+
+const CORRIDOR_COORDS = {
+  "ORR East 1": [12.9219, 77.6452],
+  "ORR East 2": [12.9694, 77.7006],
+  "ORR West 1": [12.935, 77.52],
+  "ORR West 2": [12.95, 77.48],
+  "ORR North 2": [13.05, 77.6],
+  "Bellary Road 1": [13.02, 77.59],
+  "Bellary Road 2": [13.03, 77.58],
+  "Mysore Road": [12.95, 77.54],
+  "Tumkur Road": [13.01, 77.54],
+  "Old Madras Road": [12.9762, 77.6017],
+  "CBD 1": [12.9716, 77.5946],
+  "CBD 2": [12.975, 77.6],
+  "Hosur Road": [12.92, 77.63],
+  "Non-corridor": [12.9716, 77.5946],
+};
 
 function hotspotRiskClasses(pct) {
   if (pct > 70) {
-    return { dot: "bg-error", text: "text-error", bar: "bg-error" };
+    return { dot: "bg-error", text: "text-error", bar: "bg-error", color: "#ffb4ab" };
   }
   if (pct > 40) {
-    return { dot: "bg-tertiary", text: "text-tertiary", bar: "bg-tertiary" };
+    return { dot: "bg-tertiary", text: "text-tertiary", bar: "bg-tertiary", color: "#ffb786" };
   }
-  return { dot: "bg-secondary", text: "text-secondary", bar: "bg-secondary" };
+  return { dot: "bg-secondary", text: "text-secondary", bar: "bg-secondary", color: "#4cd7f6" };
+}
+
+function corridorCoords(name) {
+  if (CORRIDOR_COORDS[name]) return CORRIDOR_COORDS[name];
+  const base = CORRIDOR_COORDS["Non-corridor"];
+  const hash = name.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+  return [base[0] + ((hash % 20) - 10) * 0.004, base[1] + ((hash % 17) - 8) * 0.004];
+}
+
+function initHotspotMap() {
+  const el = document.getElementById("gl-hotspots-map");
+  if (!el || typeof L === "undefined" || hotspotMap) return;
+  hotspotMap = L.map(el, { zoomControl: true }).setView([12.9716, 77.5946], 11);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    attribution: "© OSM © CARTO",
+    maxZoom: 19,
+  }).addTo(hotspotMap);
+  hotspotLayer = L.layerGroup().addTo(hotspotMap);
+  setTimeout(() => hotspotMap.invalidateSize(), 200);
+}
+
+function renderHotspotMap(rows) {
+  initHotspotMap();
+  if (!hotspotMap || !hotspotLayer) return;
+  hotspotLayer.clearLayers();
+  if (!rows.length) return;
+
+  const bounds = L.latLngBounds([]);
+  rows.forEach((h) => {
+    const [lat, lon] = corridorCoords(h.corridor);
+    const c = hotspotRiskClasses(h.risk_score);
+    const radius = Math.max(14, Math.min(40, 10 + h.risk_score * 0.28));
+    const marker = L.circleMarker([lat, lon], {
+      radius,
+      color: c.color,
+      fillColor: c.color,
+      fillOpacity: 0.75,
+      weight: 2,
+    })
+      .bindPopup(
+        `<strong>${h.corridor}</strong><br>Risk: ${h.risk_score}%<br>~${h.expected_events} historical events at ${h.hour_of_day}:00`
+      )
+      .addTo(hotspotLayer);
+    bounds.extend(marker.getLatLng());
+  });
+  hotspotMap.fitBounds(bounds.pad(0.25), { maxZoom: 13, padding: [40, 40] });
+}
+
+function updateHotspotInsight(rows, hour) {
+  const el = document.getElementById("gl-hotspot-insight");
+  if (!el) return;
+  if (!rows.length) {
+    el.innerHTML = `<div class="flex items-start gap-3"><span class="material-symbols-outlined text-on-surface-variant">info</span><p class="text-sm text-on-surface-variant m-0">No hotspot corridors predicted for ${hour}:00.</p></div>`;
+    return;
+  }
+  const top = rows[0];
+  const peak = rows.reduce((a, b) => (a.risk_score > b.risk_score ? a : b));
+  el.innerHTML = `
+    <div class="flex items-start gap-3">
+      <span class="material-symbols-outlined text-primary mt-0.5">psychology</span>
+      <p class="text-sm md:text-base text-on-surface leading-relaxed m-0">
+        At <strong>${hour}:00</strong>, highest risk is <strong class="text-error">${peak.corridor}</strong>
+        (${peak.risk_score}% score, ~${peak.expected_events} past unplanned events).
+        Pre-position teams on <strong>${top.corridor}</strong> and adjacent ORR segments before peak buildup.
+      </p>
+    </div>`;
 }
 
 function bindHotspotsPage() {
   const slider = document.getElementById("gl-hour-slider");
-  const forecastSlider = document.getElementById("forecast-slider");
-  const hour = parseInt(slider?.value || forecastSlider?.value || "18", 10);
-
-  if (slider) slider.value = String(hour);
-  if (forecastSlider) forecastSlider.value = String(hour);
+  const hour = parseInt(slider?.value || "18", 10);
 
   fetch(apiUrl(`/api/hotspots?hour=${hour}&top_n=8`))
     .then((r) => {
@@ -420,45 +501,50 @@ function bindHotspotsPage() {
     })
     .then((data) => {
       const list = document.getElementById("gl-hotspot-list");
-      if (!list) return;
       const rows = data.hotspots || [];
-      list.innerHTML = rows.length
-        ? rows.map((h) => {
-            const pct = h.risk_score;
-            const c = hotspotRiskClasses(pct);
-            return `<tr class="data-row border-b border-[rgba(255,255,255,0.04)]">
-              <td class="p-3 font-body-sm text-body-sm text-on-surface">
-                <span class="inline-flex items-center gap-3">
-                  <span class="w-2 h-2 rounded-full ${c.dot}"></span>${h.corridor}
-                </span>
-              </td>
-              <td class="p-3 text-right"><span class="font-mono-data ${c.text} font-bold">${pct}%</span></td>
-              <td class="p-3"><div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden"><div class="${c.bar} h-full" style="width:${Math.min(pct, 100)}%"></div></div></td>
-              <td class="p-3 text-right font-mono-data text-on-surface-variant">~${h.expected_events} events</td>
-            </tr>`;
-          }).join("")
-        : '<tr><td colspan="4" class="p-4 text-on-surface-variant">No hotspots for this hour</td></tr>';
+      if (list) {
+        list.innerHTML = rows.length
+          ? rows.map((h) => {
+              const pct = h.risk_score;
+              const c = hotspotRiskClasses(pct);
+              return `<tr class="data-row border-b border-white/5 hover:bg-white/[0.03]">
+                <td class="px-4 py-3.5 text-sm text-on-surface">
+                  <span class="inline-flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full shrink-0 ${c.dot}"></span>
+                    <span>${h.corridor}</span>
+                  </span>
+                </td>
+                <td class="px-4 py-3.5 text-right"><span class="font-mono font-semibold ${c.text}">${pct}%</span></td>
+                <td class="px-4 py-3.5">
+                  <div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+                    <div class="${c.bar} h-full rounded-full" style="width:${Math.min(pct, 100)}%"></div>
+                  </div>
+                </td>
+                <td class="px-4 py-3.5 text-right font-mono text-sm text-on-surface-variant">~${h.expected_events}</td>
+              </tr>`;
+            }).join("")
+          : `<tr><td colspan="4" class="px-4 py-10 text-center text-on-surface-variant text-sm">No hotspots for ${hour}:00</td></tr>`;
+      }
       document.querySelectorAll("#gl-hour-label").forEach((el) => {
         el.textContent = `${hour}:00`;
       });
       const timeDisplay = document.getElementById("time-display");
-      if (timeDisplay) timeDisplay.textContent = `T+00:00 (${hour}:00 Local)`;
+      if (timeDisplay) timeDisplay.textContent = `${hour}:00 Bengaluru local`;
+      updateHotspotInsight(rows, hour);
+      renderHotspotMap(rows);
     })
     .catch((err) => {
       console.error(err);
       const list = document.getElementById("gl-hotspot-list");
       if (list) {
-        list.innerHTML = `<tr><td colspan="4" class="p-4 text-error">Failed to load hotspots: ${err.message}</td></tr>`;
+        list.innerHTML = `<tr><td colspan="4" class="px-4 py-8 text-center text-error text-sm">Failed to load: ${err.message}</td></tr>`;
       }
     });
 
   if (!hotspotsBound) {
     slider?.addEventListener("input", bindHotspotsPage);
-    forecastSlider?.addEventListener("input", () => {
-      if (slider && forecastSlider) slider.value = forecastSlider.value;
-      bindHotspotsPage();
-    });
     hotspotsBound = true;
+    window.addEventListener("resize", () => hotspotMap?.invalidateSize());
   }
 }
 
