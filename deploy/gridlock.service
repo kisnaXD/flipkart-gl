@@ -1,0 +1,17 @@
+[Unit]
+Description=Gridlock Event Congestion Engine
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/flipkart-gridlock
+Environment=GRIDLOCK_HOST=127.0.0.1
+Environment=GRIDLOCK_PORT=8000
+ExecStart=/home/ubuntu/flipkart-gridlock/.venv/bin/python run.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
