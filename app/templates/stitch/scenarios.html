@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gridlock - Scenarios</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;900&display=swap');
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d8e2ff",
+                      "inverse-primary": "#005ac2",
+                      "surface-container-high": "#272a31",
+                      "primary-fixed-dim": "#adc6ff",
+                      "surface-container-highest": "#32353c",
+                      "on-secondary-fixed-variant": "#004e5c",
+                      "surface-variant": "#32353c",
+                      "tertiary-fixed": "#ffdcc6",
+                      "on-secondary-container": "#00424e",
+                      "on-primary": "#002e6a",
+                      "surface": "#10131a",
+                      "surface-container-low": "#191b23",
+                      "secondary-fixed": "#acedff",
+                      "on-error": "#690005",
+                      "on-surface-variant": "#c2c6d6",
+                      "surface-bright": "#363941",
+                      "secondary": "#4cd7f6",
+                      "inverse-surface": "#e1e2ec",
+                      "on-tertiary": "#502400",
+                      "surface-tint": "#adc6ff",
+                      "surface-container": "#1d2027",
+                      "on-secondary": "#003640",
+                      "outline": "#8c909f",
+                      "on-tertiary-container": "#461f00",
+                      "on-secondary-fixed": "#001f26",
+                      "surface-dim": "#10131a",
+                      "primary-container": "#4d8eff",
+                      "tertiary": "#ffb786",
+                      "outline-variant": "#424754",
+                      "tertiary-container": "#df7412",
+                      "on-error-container": "#ffdad6",
+                      "error": "#ffb4ab",
+                      "secondary-container": "#03b5d3",
+                      "on-primary-container": "#00285d",
+                      "on-tertiary-fixed-variant": "#723600",
+                      "on-background": "#e1e2ec",
+                      "inverse-on-surface": "#2e3038",
+                      "secondary-fixed-dim": "#4cd7f6",
+                      "primary": "#adc6ff",
+                      "tertiary-fixed-dim": "#ffb786",
+                      "on-surface": "#e1e2ec",
+                      "error-container": "#93000a",
+                      "background": "#10131a",
+                      "on-primary-fixed-variant": "#004395",
+                      "on-tertiary-fixed": "#311400",
+                      "surface-container-lowest": "#0b0e15",
+                      "on-primary-fixed": "#001a42"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "grid-columns-mobile": "4",
+                      "gutter": "16px",
+                      "panel-padding": "20px",
+                      "grid-columns-tablet": "8",
+                      "container-margin": "24px",
+                      "unit": "4px",
+                      "grid-columns-desktop": "12"
+              },
+              "fontFamily": {
+                      "headline-md": ["Geist"],
+                      "body-sm": ["Geist"],
+                      "headline-lg": ["Geist"],
+                      "label-md": ["Geist"],
+                      "display-lg": ["Geist"],
+                      "headline-lg-mobile": ["Geist"],
+                      "mono-data": ["Geist"],
+                      "title-md": ["Geist"],
+                      "body-lg": ["Geist"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "mono-data": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "title-md": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+      },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-sm overflow-hidden h-screen flex flex-col md:flex-row">
+<!-- Top Navigation (Mobile) -->
+<nav class="md:hidden fixed top-0 w-full z-50 flex justify-between items-center px-panel-padding h-16 bg-surface-container/80 backdrop-blur-lg border-b border-outline-variant dark:border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary">Gridlock</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform" data-icon="search">search</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 transition-transform" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 transition-transform" data-icon="settings">settings</span>
+</div>
+</nav>
+<!-- Side Navigation (Desktop) -->
+<nav class="hidden md:flex flex-col h-screen w-[320px] p-4 border-r border-outline-variant bg-surface-container-low dark:bg-surface-container-low shrink-0 z-50">
+<div class="flex items-center gap-4 mb-8 px-2">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" data-icon="grid_view">grid_view</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-black text-primary">Gridlock</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Bengaluru Ops</p>
+</div>
+</div>
+<div class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer" href="/">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Command</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer" href="/map">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-md text-label-md">Live Map</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-on-primary-container transition-all cursor-pointer" href="/scenarios">
+<span class="material-symbols-outlined" data-icon="dynamic_feed" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dynamic_feed</span>
+<span class="font-label-md text-label-md">Scenarios</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer" href="/hotspots">
+<span class="material-symbols-outlined" data-icon="local_fire_department">local_fire_department</span>
+<span class="font-label-md text-label-md">Hotspots</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer" href="/analytics">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer" href="/learning">
+<span class="material-symbols-outlined" data-icon="model_training">model_training</span>
+<span class="font-label-md text-label-md">Learning Loop</span>
+</a>
+</div>
+<div class="mt-auto space-y-2 pt-4 border-t border-outline-variant/30">
+<button class="w-full py-3 mb-4 rounded-lg bg-error/15 text-error border border-error font-label-md text-label-md hover:bg-error/25 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="emergency">emergency</span>
+                Dispatch
+            </button>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col md:flex-row mt-16 md:mt-0 h-full overflow-hidden bg-background">
+<!-- Left Panel: Scenario List (40%) -->
+<section class="w-full md:w-[40%] h-full flex flex-col border-r border-outline-variant/30 bg-surface-dim overflow-hidden">
+<div class="p-panel-padding border-b border-outline-variant/30 shrink-0">
+<h2 class="font-title-md text-title-md text-on-surface mb-4">Active &amp; Predictive Scenarios</h2>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full bg-surface-container border border-outline-variant rounded-lg py-2 pl-10 pr-4 text-on-surface font-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline/70" placeholder="Search scenarios, corridors..." type="text"/>
+</div>
+</div>
+<div id="gl-scenario-cards" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar"></div></section><!-- Right Panel: Detail View (60%) -->
+<section class="w-full md:w-[60%] h-full flex flex-col bg-background overflow-hidden relative">
+<!-- Detail Header -->
+<div class="p-panel-padding border-b border-outline-variant/30 bg-surface/80 backdrop-blur-md sticky top-0 z-20 flex justify-between items-start">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-1 rounded bg-error/15 text-error border border-error/30 font-mono-data text-xs flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span> LIVE
+                        </span>
+<span class="font-label-md text-label-md text-outline tracking-widest uppercase">Scenario Analysis</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">IPL Matchday - Bengaluru vs Mumbai</h1>
+</div>
+<!-- Compare Dropdown Placeholder -->
+<div class="relative">
+<button class="flex items-center gap-2 px-3 py-2 rounded-lg border border-outline-variant bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface-variant font-label-md">
+<span class="material-symbols-outlined text-[18px]" data-icon="compare_arrows">compare_arrows</span>
+                        Compare Scenario
+                        <span class="material-symbols-outlined text-[18px]" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</div>
+<div id="gl-scenario-detail" class="flex-1 overflow-y-auto p-panel-padding custom-scrollbar"></div></section></main>
+<!-- Global Custom Scrollbar Style for the dark theme -->
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #424754;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: #8c909f;
+        }
+    </style>
+<script>window.GRIDLOCK_PAGE="scenarios";</script><script src="/static/js/gridlock-app.js"></script></body></html>

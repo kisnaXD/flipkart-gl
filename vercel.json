@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "http://65.2.35.241.nip.io/$1",
+      "permanent": false
+    }
+  ]
+}

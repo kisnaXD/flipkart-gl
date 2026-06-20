@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gridlock Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d8e2ff",
+                      "inverse-primary": "#005ac2",
+                      "surface-container-high": "#272a31",
+                      "primary-fixed-dim": "#adc6ff",
+                      "surface-container-highest": "#32353c",
+                      "on-secondary-fixed-variant": "#004e5c",
+                      "surface-variant": "#32353c",
+                      "tertiary-fixed": "#ffdcc6",
+                      "on-secondary-container": "#00424e",
+                      "on-primary": "#002e6a",
+                      "surface": "#10131a",
+                      "surface-container-low": "#191b23",
+                      "secondary-fixed": "#acedff",
+                      "on-error": "#690005",
+                      "on-surface-variant": "#c2c6d6",
+                      "surface-bright": "#363941",
+                      "secondary": "#4cd7f6",
+                      "inverse-surface": "#e1e2ec",
+                      "on-tertiary": "#502400",
+                      "surface-tint": "#adc6ff",
+                      "surface-container": "#1d2027",
+                      "on-secondary": "#003640",
+                      "outline": "#8c909f",
+                      "on-tertiary-container": "#461f00",
+                      "on-secondary-fixed": "#001f26",
+                      "surface-dim": "#10131a",
+                      "primary-container": "#4d8eff",
+                      "tertiary": "#ffb786",
+                      "outline-variant": "#424754",
+                      "tertiary-container": "#df7412",
+                      "on-error-container": "#ffdad6",
+                      "error": "#ffb4ab",
+                      "secondary-container": "#03b5d3",
+                      "on-primary-container": "#00285d",
+                      "on-tertiary-fixed-variant": "#723600",
+                      "on-background": "#e1e2ec",
+                      "inverse-on-surface": "#2e3038",
+                      "secondary-fixed-dim": "#4cd7f6",
+                      "primary": "#adc6ff",
+                      "tertiary-fixed-dim": "#ffb786",
+                      "on-surface": "#e1e2ec",
+                      "error-container": "#93000a",
+                      "background": "#10131a",
+                      "on-primary-fixed-variant": "#004395",
+                      "on-tertiary-fixed": "#311400",
+                      "surface-container-lowest": "#0b0e15",
+                      "on-primary-fixed": "#001a42"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "grid-columns-mobile": "4",
+                      "gutter": "16px",
+                      "panel-padding": "20px",
+                      "grid-columns-tablet": "8",
+                      "container-margin": "24px",
+                      "unit": "4px",
+                      "grid-columns-desktop": "12"
+              },
+              "fontFamily": {
+                      "headline-md": ["Geist"],
+                      "body-sm": ["Geist"],
+                      "headline-lg": ["Geist"],
+                      "label-md": ["Geist"],
+                      "display-lg": ["Geist"],
+                      "headline-lg-mobile": ["Geist"],
+                      "mono-data": ["Geist"],
+                      "title-md": ["Geist"],
+                      "body-lg": ["Geist"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "mono-data": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "title-md": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap');
+        body { font-family: 'Geist', sans-serif; background-color: #0b0f19; color: #e1e2ec; }
+        .glass-panel {
+            background: rgba(26, 36, 56, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-active { box-shadow: 0 0 15px rgba(216, 180, 254, 0.4); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-surface-container-lowest text-on-surface antialiased overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-panel-padding h-16 bg-surface-container/80 backdrop-blur-lg">
+<div class="flex items-center gap-6">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-tight">Gridlock</div>
+<div class="hidden md:flex items-center gap-4 h-full">
+<a class="text-primary dark:text-primary border-b-2 border-primary dark:border-primary pb-1 font-label-md text-label-md cursor-pointer active:scale-95 transition-transform flex flex-col justify-center h-full" href="/">Command</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 font-label-md text-label-md cursor-pointer active:scale-95 transition-transform flex flex-col justify-center h-full" href="/map">Live Map</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 font-label-md text-label-md cursor-pointer active:scale-95 transition-transform flex flex-col justify-center h-full" href="/scenarios">Scenarios</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 font-label-md text-label-md cursor-pointer active:scale-95 transition-transform flex flex-col justify-center h-full" href="/hotspots">Hotspots</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 font-label-md text-label-md cursor-pointer active:scale-95 transition-transform flex flex-col justify-center h-full" href="/analytics">Analytics</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 font-label-md text-label-md cursor-pointer active:scale-95 transition-transform flex flex-col justify-center h-full" href="/learning">Learning Loop</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors duration-200">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors duration-200">settings</span>
+<button class="bg-surface-variant text-on-surface px-4 py-2 rounded font-label-md text-label-md hover:bg-surface-container-high transition-colors">Ops Mode</button>
+<div class="w-8 h-8 rounded-full bg-surface-bright overflow-hidden border border-outline-variant">
+<img alt="Operator Profile" class="w-full h-full object-cover" data-alt="A close up professional headshot of an operator in a dark, high-tech mission control environment. Soft blue rim lighting illuminating the side of their face. High contrast, cinematic look, sharp focus on features." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVlvukOUbfoMIDHG_uElidUAsMr9anS8pBXcTrKqkSYRcZyhIi9t6bhYZMZHsWitscxFJ22vfYofO5nkuGo63YxQ_RgoEdLRoIHp3_azfEnScJ90vYnlnssfBzqIb0Hb-4ya5OfVa21n4OLVU36FMubWVgWkpuhEddOzTERvvkUf0psWTjVktIvS8qBqvRRUFYS2AFq2z5Fy9SD25GHq2Zm9jZC_9su_BFfyztSBoJ6EGy7jCkgTOWYezhTn6zQCCnMOAUxslmag"/>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow pt-[80px] px-panel-padding pb-container-margin flex flex-col gap-6 md:flex-row">
+<!-- Left Col: Scenario Picker -->
+<aside class="w-full md:w-[260px] flex-shrink-0 flex flex-col gap-4">
+<div class="glass-panel rounded-xl p-4 flex flex-col h-full border border-outline-variant">
+<h2 class="font-title-md text-title-md text-on-surface mb-4 border-b border-white/5 pb-2">Active Scenarios</h2>
+<div id="gl-scenario-list" class="flex flex-col gap-2">
+</div>
+</div>
+</aside>
+<!-- Center Col: Map Preview -->
+<section class="flex-grow flex flex-col gap-4 min-w-0">
+<div class="glass-panel rounded-xl overflow-hidden relative border border-outline-variant h-[400px] md:h-full flex flex-col">
+<div id="gl-mini-map" class="absolute inset-0 z-0 bg-surface-container-lowest"></div>
+<div class="absolute top-4 left-4 glass-panel px-3 py-1.5 rounded-lg flex items-center gap-2 z-10">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">stadium</span>
+<span id="gl-map-chip" class="font-label-md text-label-md">Loading…</span>
+</div>
+<a id="gl-open-map" class="absolute bottom-4 right-4 glass-panel px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-white/10 transition-colors text-primary font-label-md text-label-md z-10" href="/map">
+                    Open full map <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</section>
+<!-- Right Col: Action Summary -->
+<aside class="w-full md:w-[340px] flex-shrink-0 flex flex-col gap-4">
+<div class="glass-panel rounded-xl p-5 flex flex-col h-full border border-outline-variant gap-6">
+<header class="flex justify-between items-start border-b border-white/5 pb-4">
+<div>
+<h2 id="gl-title" class="font-headline-md text-headline-md text-on-surface">Loading…</h2>
+<p id="gl-subtitle" class="font-body-sm text-body-sm text-on-surface-variant mt-1">—</p>
+</div>
+<div id="gl-tier-badge" class="bg-[#d8b4fe]/20 text-[#d8b4fe] border border-[#d8b4fe]/50 px-3 py-1 rounded-full font-label-md text-label-md flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#d8b4fe]"></span>
+                        —
+                    </div>
+</header>
+<!-- KPI Grid -->
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-container-high rounded-lg p-3 border border-white/5">
+<div class="font-label-md text-label-md text-on-surface-variant mb-1">Impact Score</div>
+<div class="font-mono-data text-mono-data text-2xl text-error"><span id="gl-score">—</span><span class="text-sm text-on-surface-variant">/100</span></div>
+</div>
+<div class="bg-surface-container-high rounded-lg p-3 border border-white/5">
+<div class="font-label-md text-label-md text-on-surface-variant mb-1">Duration</div>
+<div id="gl-duration" class="font-mono-data text-mono-data text-2xl text-secondary">—</div>
+</div>
+<div class="bg-surface-container-high rounded-lg p-3 border border-white/5">
+<div class="font-label-md text-label-md text-on-surface-variant mb-1">Delay Est.</div>
+<div id="gl-delay" class="font-mono-data text-mono-data text-2xl text-tertiary">—</div>
+</div>
+<div class="bg-surface-container-high rounded-lg p-3 border border-white/5">
+<div class="font-label-md text-label-md text-on-surface-variant mb-1">Peak Window</div>
+<div id="gl-peak" class="font-mono-data text-mono-data text-lg text-primary">—</div>
+</div>
+</div>
+<!-- Deployment Stats -->
+<div class="flex flex-col gap-3 pt-2">
+<div class="font-title-md text-title-md text-on-surface">Current Deployment</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-3 bg-surface-container p-3 rounded-lg flex-1 border border-white/5">
+<span class="material-symbols-outlined text-secondary text-3xl">local_police</span>
+<div>
+<div id="gl-constables" class="font-mono-data text-mono-data text-xl text-on-surface">—</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Constables</div>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface-container p-3 rounded-lg flex-1 border border-white/5">
+<span class="material-symbols-outlined text-tertiary text-3xl">fence</span>
+<div>
+<div id="gl-barricades" class="font-mono-data text-mono-data text-xl text-on-surface">—</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Barricades</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Diversions -->
+<div id="gl-routes" class="flex flex-col gap-2 pt-2">
+</div>
+<div class="mt-auto pt-4">
+<button id="gl-full-plan" type="button" class="w-full bg-[#03b5d3] hover:bg-[#03b5d3]/90 text-[#001f26] font-headline-md text-body-lg py-3 rounded-lg transition-colors flex justify-center items-center gap-2 shadow-[0_0_15px_rgba(3,181,211,0.2)]">
+<span class="material-symbols-outlined text-lg">fact_check</span>
+                        View Full Deployment Plan
+                    </button>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom Strip -->
+<footer class="mt-auto px-panel-padding pb-4">
+<div class="glass-panel rounded-xl p-4 border border-outline-variant flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Operational Workflow</div>
+<div class="flex items-center gap-6 md:gap-12 w-full md:w-auto">
+<div class="flex items-center gap-3 text-on-surface opacity-80">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-sm">ads_click</span>
+</div>
+<span class="font-body-sm text-body-sm">1. Pick scenario</span>
+</div>
+<div class="h-px w-8 bg-outline-variant hidden md:block"></div>
+<div class="flex items-center gap-3 text-on-surface opacity-80">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-sm">map</span>
+</div>
+<span class="font-body-sm text-body-sm">2. Read map</span>
+</div>
+<div class="h-px w-8 bg-outline-variant hidden md:block"></div>
+<div class="flex items-center gap-3 text-on-surface opacity-80">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-sm">deployed_code</span>
+</div>
+<span class="font-body-sm text-body-sm">3. Deploy</span>
+</div>
+</div>
+</div>
+</footer>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>window.GRIDLOCK_PAGE="command";</script>
+<script src="/static/js/gridlock-app.js"></script>
+</body></html>
