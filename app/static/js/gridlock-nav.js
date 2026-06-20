@@ -32,7 +32,7 @@
   nav.innerHTML = `
     <div class="flex items-center gap-8 min-w-0">
       <a href="/" class="font-bold text-lg text-[#adc6ff] shrink-0">Gridlock</a>
-      <nav class="hidden md:flex items-center gap-5 overflow-x-auto">${navLinks}</nav>
+      <nav class="flex items-center gap-4 overflow-x-auto max-w-[70vw]">${navLinks}</nav>
     </div>
     <div class="flex items-center gap-3 shrink-0">
       <span class="hidden sm:inline text-xs text-[#8c909f]">Bengaluru Ops</span>
@@ -44,6 +44,7 @@
 
   // Mobile nav row
   const mobileNav = document.createElement("nav");
+  mobileNav.id = "gl-mobile-nav";
   mobileNav.className =
     "md:hidden fixed top-16 left-0 right-0 z-[199] flex gap-4 overflow-x-auto px-4 py-2 bg-[#10131a]/95 border-b border-white/10";
   mobileNav.innerHTML = navLinks;

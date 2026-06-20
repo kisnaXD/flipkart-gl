@@ -10,12 +10,11 @@ body.gl-shell {
   }
 }
 
-/* Hide Stitch's inconsistent sidebars / duplicate navs */
+/* Hide Stitch's inconsistent sidebars / duplicate navs (not our #gl-mobile-nav) */
 body.gl-shell aside.hidden,
 body.gl-shell nav.hidden.lg\:flex,
 body.gl-shell nav.hidden.md\:flex,
-body.gl-shell nav.md\:hidden.fixed,
-body.gl-shell nav.lg\:hidden.fixed {
+body.gl-shell nav.lg\:hidden.fixed:not(#gl-mobile-nav) {
   display: none !important;
 }
 
