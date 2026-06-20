@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gridlock - Hotspots</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d8e2ff",
+                        "inverse-primary": "#005ac2",
+                        "surface-container-high": "#272a31",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-container-highest": "#32353c",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "surface-variant": "#32353c",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-secondary-container": "#00424e",
+                        "on-primary": "#002e6a",
+                        "surface": "#10131a",
+                        "surface-container-low": "#191b23",
+                        "secondary-fixed": "#acedff",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#c2c6d6",
+                        "surface-bright": "#363941",
+                        "secondary": "#4cd7f6",
+                        "inverse-surface": "#e1e2ec",
+                        "on-tertiary": "#502400",
+                        "surface-tint": "#adc6ff",
+                        "surface-container": "#1d2027",
+                        "on-secondary": "#003640",
+                        "outline": "#8c909f",
+                        "on-tertiary-container": "#461f00",
+                        "on-secondary-fixed": "#001f26",
+                        "surface-dim": "#10131a",
+                        "primary-container": "#4d8eff",
+                        "tertiary": "#ffb786",
+                        "outline-variant": "#424754",
+                        "tertiary-container": "#df7412",
+                        "on-error-container": "#ffdad6",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#03b5d3",
+                        "on-primary-container": "#00285d",
+                        "on-tertiary-fixed-variant": "#723600",
+                        "on-background": "#e1e2ec",
+                        "inverse-on-surface": "#2e3038",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "primary": "#adc6ff",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "on-surface": "#e1e2ec",
+                        "error-container": "#93000a",
+                        "background": "#10131a",
+                        "on-primary-fixed-variant": "#004395",
+                        "on-tertiary-fixed": "#311400",
+                        "surface-container-lowest": "#0b0e15",
+                        "on-primary-fixed": "#001a42"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "grid-columns-mobile": "4",
+                        "gutter": "16px",
+                        "panel-padding": "20px",
+                        "grid-columns-tablet": "8",
+                        "container-margin": "24px",
+                        "unit": "4px",
+                        "grid-columns-desktop": "12"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Geist"],
+                        "body-sm": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "label-md": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "mono-data": ["Geist"],
+                        "title-md": ["Geist"],
+                        "body-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "mono-data": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "title-md": ["18px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Geist', sans-serif; background-color: #10131a; color: #e1e2ec; }
+        .glass-panel {
+            background: rgba(26, 36, 56, 0.7);
+            backdrop-filter: blur(16px);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+        .data-row:hover { background: rgba(255,255,255,0.03); }
+        .timeline-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #adc6ff;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #10131a;
+            box-shadow: 0 0 10px rgba(173, 198, 255, 0.5);
+        }
+        .timeline-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #adc6ff;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #10131a;
+            box-shadow: 0 0 10px rgba(173, 198, 255, 0.5);
+        }
+    </style>
+<link rel="stylesheet" href="/css/gridlock-shell.css"/>
+</head>
+<body class="flex h-screen overflow-hidden bg-background text-on-surface">
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden lg:flex flex-col h-screen p-4 border-r border-outline-variant fixed left-0 top-0 w-[320px] bg-surface-container-low dark:bg-surface-container-low z-40">
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-black text-primary">Gridlock</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Bengaluru Ops</p>
+</div>
+</div>
+<button class="w-full bg-primary/15 border border-primary text-primary font-title-md text-title-md py-3 rounded-lg mb-8 hover:bg-primary/25 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">send</span>
+            Dispatch
+        </button>
+<ul class="flex flex-col gap-2 flex-grow">
+<li class="px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 cursor-pointer transition-all duration-200 flex items-center gap-3">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Command</span>
+</li>
+<li class="px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 cursor-pointer transition-all duration-200 flex items-center gap-3">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-md text-label-md">Live Map</span>
+</li>
+<li class="px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 cursor-pointer transition-all duration-200 flex items-center gap-3">
+<span class="material-symbols-outlined">dynamic_feed</span>
+<span class="font-label-md text-label-md">Scenarios</span>
+</li>
+<li class="px-4 py-3 rounded-lg bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-on-primary-container cursor-pointer transition-all duration-200 flex items-center gap-3">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-label-md text-label-md">Hotspots</span>
+</li>
+<li class="px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 cursor-pointer transition-all duration-200 flex items-center gap-3">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</li>
+<li class="px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 cursor-pointer transition-all duration-200 flex items-center gap-3">
+<span class="material-symbols-outlined">model_training</span>
+<span class="font-label-md text-label-md">Learning Loop</span>
+</li>
+</ul>
+<div class="mt-auto border-t border-outline-variant pt-4">
+<ul class="flex flex-col gap-2">
+<li class="px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 cursor-pointer transition-all duration-200 flex items-center gap-3">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</li>
+<li class="px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 cursor-pointer transition-all duration-200 flex items-center gap-3">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</li>
+</ul>
+</div>
+</nav>
+<!-- TopNavBar (Mobile) -->
+<nav class="lg:hidden fixed top-0 w-full z-50 flex justify-between items-center px-panel-padding h-16 bg-surface-container/80 backdrop-blur-lg border-b border-outline-variant dark:border-outline-variant">
+<div class="flex items-center gap-3">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary">Gridlock</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer active:scale-95 transition-transform text-on-surface-variant hover:text-primary">notifications</span>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline-variant">
+<img alt="Operator Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3Zd4COEKfB2o2D29_hbQBgz7engbkyXLrkQH-9gjzu-b-0WAsPCQq9tDnjrsT5qVcOxiTvSRghOXAX46Ri-jwzVKPhFbVvB5f9_7t46mW0HuRLQMiYbgSSEYtHMpxVqj7sVjGBENCRzvFzo3BZROlgFRNCWYNcOklr_Ux3FRyGwx4PGZBj5lwe5NDQPQ3eTPgjul6cWxfKz6W_trWNya_-No9y4pKQg4z-oSB_xJV0XYHz32mpFnSlu44NdvMkxo2ZprhcOflgQ"/>
+</div>
+</div>
+</nav>
+<!-- Mobile Navigation links (horizontal scrolling) -->
+<div class="lg:hidden fixed top-16 w-full z-40 bg-surface-container-low border-b border-outline-variant overflow-x-auto hide-scrollbar">
+<ul class="flex whitespace-nowrap px-4 h-12 items-center gap-6">
+<li class="text-on-surface-variant font-label-md text-label-md">Command</li>
+<li class="text-on-surface-variant font-label-md text-label-md">Live Map</li>
+<li class="text-on-surface-variant font-label-md text-label-md">Scenarios</li>
+<li class="text-primary border-b-2 border-primary pb-1 font-label-md text-label-md">Hotspots</li>
+<li class="text-on-surface-variant font-label-md text-label-md">Analytics</li>
+</ul>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-[320px] flex flex-col h-screen mt-28 lg:mt-0 relative overflow-hidden bg-background">
+<!-- Top Half: Analytics & Heatmap Ranking -->
+<div class="h-1/2 flex flex-col p-container-margin gap-4 overflow-hidden border-b border-outline-variant z-10 relative bg-surface-container-lowest">
+<div class="flex justify-between items-end mb-2">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface m-0">Predictive Hotspots</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Forecast corridor risk analysis</p>
+</div>
+<div class="flex gap-2 items-center flex-wrap">
+<button class="px-4 py-2 bg-surface-variant border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">Export Data</button>
+<label class="flex items-center gap-2 font-label-md text-on-surface-variant">
+<span id="gl-hour-label">18:00</span>
+<input id="gl-hour-slider" type="range" min="0" max="23" value="18" class="timeline-slider w-32"/>
+</label>
+</div>
+<!-- Bento Layout for Top Analytics -->
+<div class="flex-1 grid grid-cols-1 md:grid-cols-12 gap-gutter overflow-hidden">
+<!-- Corridor Ranking Table -->
+<div class="md:col-span-8 bg-surface-container-low border border-outline-variant rounded-xl flex flex-col overflow-hidden">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">sort</span>
+                            Corridor Risk Ranking <span id="gl-hour-label" class="font-mono-data text-primary ml-2">18:00</span>
+                        </h3>
+<span class="font-mono-data text-mono-data text-on-surface-variant">Next 24h</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-2">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-[rgba(255,255,255,0.04)]">
+<th class="p-3 font-label-md text-label-md text-on-surface-variant font-normal">Corridor</th>
+<th class="p-3 font-label-md text-label-md text-on-surface-variant font-normal text-right">Risk Score</th>
+<th class="p-3 font-label-md text-label-md text-on-surface-variant font-normal w-32">Trend</th>
+<th class="p-3 font-label-md text-label-md text-on-surface-variant font-normal text-right">Est. Delay</th>
+</tr>
+</thead>
+<tbody id="gl-hotspot-list"></tbody>
+</table>
+</div>
+</div>
+<!-- AI Insight Card -->
+<div class="md:col-span-4 bg-surface-container-low border border-outline-variant rounded-xl flex flex-col overflow-hidden relative">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container relative z-10">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">psychology</span>
+                            Nexus AI Insight
+                        </h3>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-center relative z-10">
+<div class="mb-4 flex items-start gap-3">
+<div class="w-1 h-full min-h-[40px] bg-primary rounded-full"></div>
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
+                                "Corridor risk is <span class="text-error font-bold">14% higher</span> today due to weekend evening patterns observed in 800+ historical records."
+                            </p>
+</div>
+<div class="mt-auto grid grid-cols-2 gap-3">
+<div class="bg-surface-variant/50 p-3 rounded-lg border border-outline-variant/50">
+<span class="block font-label-md text-label-md text-on-surface-variant mb-1">Confidence</span>
+<span class="font-mono-data text-mono-data text-primary">94.2%</span>
+</div>
+<div class="bg-surface-variant/50 p-3 rounded-lg border border-outline-variant/50">
+<span class="block font-label-md text-label-md text-on-surface-variant mb-1">Data Points</span>
+<span class="font-mono-data text-mono-data text-secondary">842 Hist.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Timeline Control Strip -->
+<div class="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 flex flex-col gap-2 mt-2">
+<div class="flex justify-between items-center px-1">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Next 24h Forecast Timeline</span>
+<span class="font-mono-data text-mono-data text-primary" id="time-display">T+04:00 (18:00 Local)</span>
+</div>
+<div class="relative w-full h-8 flex items-center">
+<div class="absolute w-full h-1 bg-surface-variant rounded-full overflow-hidden">
+<!-- Heatmap gradient underlay for timeline -->
+<div class="w-full h-full bg-gradient-to-r from-secondary via-tertiary to-error opacity-30"></div>
+</div>
+<input class="timeline-slider w-full h-full absolute top-0 bg-transparent z-10" id="forecast-slider" max="23" min="0" type="range" value="4"/>
+<!-- Timeline markers -->
+<div class="w-full flex justify-between absolute top-4 px-[8px] pointer-events-none">
+<span class="font-mono-data text-[10px] text-on-surface-variant">Now</span>
+<span class="font-mono-data text-[10px] text-on-surface-variant">+6h</span>
+<span class="font-mono-data text-[10px] text-on-surface-variant">+12h</span>
+<span class="font-mono-data text-[10px] text-on-surface-variant">+18h</span>
+<span class="font-mono-data text-[10px] text-on-surface-variant">+24h</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Half: Map Canvas -->
+<div class="h-1/2 relative bg-[#0b0f19] overflow-hidden" data-location="Bengaluru" style="">
+<!-- Simulated Map Background (Dark Mode styled map image) -->
+<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&amp;w=2074&amp;auto=format&amp;fit=crop')] bg-cover bg-center opacity-20 mix-blend-luminosity" data-alt="A dark-mode, high-density digital map of a sprawling metropolitan city, rendered in a sophisticated dark navy and black color palette. The map aesthetic is highly technical and futuristic, resembling a tactical war-room display or air-traffic control system. Thin, glowing geometric lines represent road networks, with subtle grid overlays providing structural rigidity. The overall mood is serious, analytical, and optimized for low-light, high-stakes operational environments."></div>
+<!-- Map Overlay Gradient for depth -->
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50"></div>
+<!-- SVG Map Overlays (Corridor Risk Bands) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-10" preserveaspectratio="xMidYMid slice" viewbox="0 0 1000 500">
+<defs>
+<filter height="140%" id="glow-error" width="140%" x="-20%" y="-20%">
+<fegaussianblur result="blur" stddeviation="4"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+<filter height="140%" id="glow-tertiary" width="140%" x="-20%" y="-20%">
+<fegaussianblur result="blur" stddeviation="3"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+</defs>
+<!-- ORR East 1 (High Risk - Red) -->
+<path class="opacity-90" d="M 200 400 Q 300 350 400 250 T 600 150" fill="none" filter="url(#glow-error)" stroke="#ffb4ab" stroke-linecap="round" stroke-width="8"></path>
+<path class="opacity-80" d="M 200 400 Q 300 350 400 250 T 600 150" fill="none" stroke="#690005" stroke-dasharray="10 5" stroke-width="2"></path>
+<!-- Mysore Road (Medium-High Risk - Orange) -->
+<path class="opacity-80" d="M 100 100 Q 250 200 350 300 T 500 450" fill="none" filter="url(#glow-tertiary)" stroke="#ffb786" stroke-linecap="round" stroke-width="6"></path>
+<!-- Secondary Corridors (Cyan) -->
+<path class="opacity-50" d="M 600 150 Q 750 200 850 100" fill="none" stroke="#4cd7f6" stroke-linecap="round" stroke-width="4"></path>
+<path class="opacity-40" d="M 500 450 Q 700 400 900 350" fill="none" stroke="#4cd7f6" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+<!-- Map Floating Controls -->
+<div class="absolute bottom-6 right-6 flex flex-col gap-2 z-20">
+<button class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant text-on-surface flex items-center justify-center hover:bg-surface-variant transition-colors shadow-lg">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<button class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant text-on-surface flex items-center justify-center hover:bg-surface-variant transition-colors shadow-lg">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<button class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant text-primary flex items-center justify-center hover:bg-surface-variant transition-colors shadow-lg mt-2">
+<span class="material-symbols-outlined text-[20px]">my_location</span>
+</button>
+</div>
+<!-- Map Legend Glass Card -->
+<div class="absolute bottom-6 left-6 glass-panel p-3 rounded-xl z-20 flex flex-col gap-2 shadow-2xl">
+<span class="font-label-md text-label-md text-on-surface-variant mb-1 uppercase tracking-wider">Risk Bands</span>
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-error shadow-[0_0_8px_rgba(255,180,171,0.8)]"></div>
+<span class="font-body-sm text-body-sm text-on-surface">Critical (&gt;85%)</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-tertiary shadow-[0_0_6px_rgba(255,183,134,0.5)]"></div>
+<span class="font-body-sm text-body-sm text-on-surface">Elevated (70-85%)</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="font-body-sm text-body-sm text-on-surface">Stable (&lt;70%)</span>
+</div>
+</div>
+<!-- Tooltip Overlay for ORR East 1 -->
+<div class="absolute top-[30%] left-[45%] glass-panel p-2 rounded-lg z-20 transform -translate-x-1/2 -translate-y-1/2 border-l-2 border-l-error shadow-lg pointer-events-none">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-title-md text-[14px] font-bold text-on-surface">ORR East 1</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-mono-data bg-error/20 text-error border border-error/50">92%</span>
+</div>
+<span class="font-mono-data text-[11px] text-on-surface-variant block">Vol: 4.2k v/h | Spd: 12km/h</span>
+</div>
+</div>
+</main>
+<script>
+        // Simple timeline slider interaction
+        const slider = document.getElementById('forecast-slider');
+        const display = document.getElementById('time-display');
+        
+        slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            const displayVal = val < 10 ? `0${val}` : val;
+            const baseHour = 14; // Assuming current time is 14:00
+            const localHour = (baseHour + val) % 24;
+            const localDisplay = localHour < 10 ? `0${localHour}` : localHour;
+            
+            display.textContent = `T+${displayVal}:00 (${localDisplay}:00 Local)`;
+        });
+    </script>
+<script>window.GRIDLOCK_PAGE="hotspots";</script><script src="/js/config.js"></script>
+<script src="/js/gridlock-nav.js"></script>
+<script src="/js/gridlock-app.js"></script></body></html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Live Map - Gridlock Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* Geist Font Fallback for Demo */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        :root { --font-geist: 'Inter', sans-serif; }
+        .font-headline-md, .font-body-sm, .font-headline-lg, .font-label-md, .font-display-lg, .font-headline-lg-mobile, .font-mono-data, .font-title-md, .font-body-lg {
+            font-family: var(--font-geist);
+        }
+        
+        .glass-panel {
+            background: rgba(26, 36, 56, 0.7);
+            backdrop-filter: blur(16px);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d8e2ff",
+                        "inverse-primary": "#005ac2",
+                        "surface-container-high": "#272a31",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-container-highest": "#32353c",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "surface-variant": "#32353c",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-secondary-container": "#00424e",
+                        "on-primary": "#002e6a",
+                        "surface": "#10131a",
+                        "surface-container-low": "#191b23",
+                        "secondary-fixed": "#acedff",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#c2c6d6",
+                        "surface-bright": "#363941",
+                        "secondary": "#4cd7f6",
+                        "inverse-surface": "#e1e2ec",
+                        "on-tertiary": "#502400",
+                        "surface-tint": "#adc6ff",
+                        "surface-container": "#1d2027",
+                        "on-secondary": "#003640",
+                        "outline": "#8c909f",
+                        "on-tertiary-container": "#461f00",
+                        "on-secondary-fixed": "#001f26",
+                        "surface-dim": "#10131a",
+                        "primary-container": "#4d8eff",
+                        "tertiary": "#ffb786",
+                        "outline-variant": "#424754",
+                        "tertiary-container": "#df7412",
+                        "on-error-container": "#ffdad6",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#03b5d3",
+                        "on-primary-container": "#00285d",
+                        "on-tertiary-fixed-variant": "#723600",
+                        "on-background": "#e1e2ec",
+                        "inverse-on-surface": "#2e3038",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "primary": "#adc6ff",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "on-surface": "#e1e2ec",
+                        "error-container": "#93000a",
+                        "background": "#10131a",
+                        "on-primary-fixed-variant": "#004395",
+                        "on-tertiary-fixed": "#311400",
+                        "surface-container-lowest": "#0b0e15",
+                        "on-primary-fixed": "#001a42",
+                        // Tactical Ops Palette
+                        "ops-red": "#FF4444",
+                        "ops-amber": "#FFBB33",
+                        "ops-green": "#00C851",
+                        "ops-blue": "#33B5E5",
+                        "ops-pink": "#FF4081"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "grid-columns-mobile": "4",
+                        "gutter": "16px",
+                        "panel-padding": "20px",
+                        "grid-columns-tablet": "8",
+                        "container-margin": "24px",
+                        "unit": "4px",
+                        "grid-columns-desktop": "12"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Geist"],
+                        "body-sm": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "label-md": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "mono-data": ["Geist"],
+                        "title-md": ["Geist"],
+                        "body-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "mono-data": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "title-md": ["18px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link rel="stylesheet" href="/css/gridlock-shell.css"/>
+</head>
+<body class="bg-background text-on-surface overflow-hidden font-body-lg">
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-panel-padding h-16 bg-surface-container/80 backdrop-blur-lg flat no shadows">
+<div class="flex items-center gap-gutter">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary">Gridlock</div>
+<nav class="hidden md:flex ml-8 gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95 transition-transform font-label-md text-label-md" href="/">Command</a>
+<a class="text-primary dark:text-primary border-b-2 border-primary dark:border-primary pb-1 hover:text-primary dark:hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95 transition-transform font-label-md text-label-md" href="/map">Live Map</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95 transition-transform font-label-md text-label-md" href="/scenarios">Scenarios</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95 transition-transform font-label-md text-label-md" href="/hotspots">Hotspots</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95 transition-transform font-label-md text-label-md" href="/analytics">Analytics</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95 transition-transform font-label-md text-label-md" href="/learning">Learning Loop</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-4 py-2 rounded-DEFAULT hover:bg-primary-fixed transition-colors">Ops Mode</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant border border-outline-variant overflow-hidden">
+<img alt="Operator Profile" class="w-full h-full object-cover" data-alt="A close up, high resolution portrait of a professional female tech operator in a dimly lit, high-tech control room environment. She is wearing a dark, minimal headset. The lighting features subtle blue and cyan neon accents reflecting off her face, typical of a modern cyber-operations or war-room setting. The mood is serious, focused, and highly professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCUcLT45nZqW8acP2DcpX2arsdyEnDdnSnHXJLQw-f7rbfY02m3sl1BqnCNuHRiRHC868LzPgFHUWMgdl3wX-RQLo6mm4pJosOMQrLuB4SA8NL8gWUxbEjmbbO-YiSKhBUhjVGFXwTn8iWOP0bWnB2ejEkyP8wslYaNaLDPO7DgobKs1yG22eOZsCjt2vZw2ndCw045L7bkfkEe_NR_b3FUW5DGYkbh3C_D4C70X-WsfunA2voaENoaQicZaqH6FPnvuVR0JaQmg"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="relative w-full h-[calc(100vh-64px)]">
+<!-- Map Background -->
+<div id="gl-leaflet-map" class="absolute inset-0 z-0 bg-surface-container-lowest"></div>
+<!-- Top-Left Info Banner -->
+<div class="absolute top-4 left-6 z-20 gl-map-overlay">
+<div class="glass-panel rounded-lg p-3 flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-ops-red animate-pulse"></div>
+<div id="gl-map-banner" class="font-title-md text-title-md text-on-surface">Loading simulation…</div>
+<div class="px-2 py-1 rounded bg-ops-red/15 border border-ops-red/30 text-ops-red font-mono-data text-[10px] uppercase tracking-wider">Active Deployment</div>
+</div>
+</div>
+<!-- Top-Right Toggles -->
+<div class="absolute top-4 right-[384px] z-20 flex gap-2 gl-map-overlay">
+<button id="gl-toggle-past" type="button" class="glass-panel px-4 py-2 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface border border-outline-variant/50 flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">history</span> Past Events
+            </button>
+<button type="button" class="bg-surface-variant border border-primary text-primary px-4 py-2 rounded-full font-label-md text-label-md flex items-center gap-2 shadow-[0_0_8px_rgba(173,198,255,0.2)]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span> Active Plan
+            </button>
+<button id="gl-toggle-barricades" type="button" class="glass-panel px-4 py-2 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface border border-ops-pink/50 hover:border-ops-pink flex items-center gap-2 transition-colors">
+<div class="w-2 h-2 rounded-full bg-ops-pink"></div> Barricades
+            </button>
+<button id="gl-toggle-routes" type="button" class="glass-panel px-4 py-2 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface border border-ops-blue/50 hover:border-ops-blue flex items-center gap-2 transition-colors">
+<div class="w-2 h-2 rounded-full bg-ops-blue"></div> Diversions
+            </button>
+</div>
+<!-- Bottom-Left Legend -->
+<div class="absolute bottom-24 left-6 z-20 gl-map-overlay">
+<div class="glass-panel rounded-xl p-4 w-64 space-y-3">
+<div class="font-label-md text-label-md text-outline uppercase tracking-wider mb-2">Map Legend</div>
+<div class="flex items-center gap-3 font-body-sm text-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-ops-blue text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>Epicenter</span>
+</div>
+<div class="flex items-center gap-3 font-body-sm text-body-sm text-on-surface-variant">
+<div class="w-4 h-4 border-2 border-dashed border-outline rounded-sm"></div>
+<span>Impact Zone</span>
+</div>
+<div class="flex items-center gap-3 font-body-sm text-body-sm text-on-surface-variant">
+<div class="w-4 h-4 rounded bg-surface-variant border border-ops-pink flex items-center justify-center">
+<span class="font-mono-data text-[10px] text-ops-pink">B</span>
+</div>
+<span>Barricade Point</span>
+</div>
+<div class="flex items-center gap-3 font-body-sm text-body-sm text-on-surface-variant">
+<div class="w-4 h-0.5 bg-ops-blue"></div>
+<span>Diversion Route</span>
+</div>
+<div class="pt-2 border-t border-white/5 space-y-2">
+<div class="font-label-md text-[10px] text-outline uppercase">Impact Tiers</div>
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-ops-red" title="Critical"></div>
+<div class="w-3 h-3 rounded-full bg-ops-amber" title="High"></div>
+<div class="w-3 h-3 rounded-full bg-ops-green" title="Normal"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Drawer (Floating Glass) -->
+<aside class="absolute right-6 top-4 bottom-24 w-[360px] glass-panel rounded-xl flex flex-col z-30 overflow-hidden shadow-2xl gl-map-overlay">
+<!-- Header -->
+<div class="p-4 border-b border-white/10 flex justify-between items-center bg-surface-container/50">
+<h2 id="gl-drawer-title" class="font-title-md text-title-md text-on-surface">Action Plan</h2>
+<button class="text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Content -->
+<div class="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
+<!-- Scenario Details -->
+<section>
+<h3 class="font-label-md text-label-md text-outline uppercase tracking-wider mb-3">Scenario Details</h3>
+<div id="gl-drawer-detail" class="bg-surface-container-high rounded-lg p-3 border border-outline-variant/30">
+</div>
+</section>
+<!-- Diversion Notes -->
+<section>
+<h3 class="font-label-md text-label-md text-outline uppercase tracking-wider mb-3">Active Diversions (3)</h3>
+<div id="gl-drawer-routes" class="space-y-2">
+</div>
+</section>
+<!-- Hotspots List -->
+<section>
+<h3 class="font-label-md text-label-md text-outline uppercase tracking-wider mb-3">Corridor Hotspots</h3>
+<ul id="gl-drawer-hotspots" class="space-y-1">
+</ul>
+</section>
+</div>
+<!-- Footer CTA -->
+<div class="p-4 border-t border-white/10 bg-surface-container/80 backdrop-blur-md">
+<button class="w-full bg-ops-red/15 border border-ops-red text-ops-red font-label-md text-label-md py-2.5 rounded-lg hover:bg-ops-red hover:text-white transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">campaign</span> Initiate Dispatch
+                </button>
+</div>
+</aside>
+<!-- Floating Bottom Bar (Scenario Chips) -->
+<div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30">
+<div id="gl-scenario-chips" class="glass-panel rounded-full px-2 py-2 flex items-center gap-2 shadow-xl border border-outline-variant/40 gl-map-overlay">
+<div class="px-3 font-label-md text-[10px] text-outline uppercase tracking-widest border-r border-white/10 shrink-0">Scenarios</div>
+<div id="gl-scenario-chips-inner" class="flex items-center gap-2"></div>
+</div>
+</div>
+</main>
+<style>
+        /* Custom thin scrollbar for drawer */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>window.GRIDLOCK_PAGE="map";</script>
+<script src="/js/config.js"></script>
+<script src="/js/gridlock-nav.js"></script>
+<script src="/js/gridlock-app.js"></script>
+</body></html>

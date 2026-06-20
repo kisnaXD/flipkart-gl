@@ -18,29 +18,46 @@ Political rallies, festivals, sports events, construction, and sudden gatherings
 ## Architecture
 
 ```
-Astram CSV → pipeline (train) → models (joblib)
-                                      ↓
-Live event → FastAPI /api/analyze → impact + forecast + resources + diversion
-                                      ↓
-                              Stitch command-center UI (map, scenarios, learning)
+                    ┌─────────────────────────┐
+                    │   Vercel (frontend/)    │
+                    │   HTML + JS + CSS       │
+                    └───────────┬─────────────┘
+                                │ /api/* → nip.io (proxy)
+                                ▼
+Astram CSV → pipeline → models  │  EC2 FastAPI (API only)
+                                │  /api/analyze, /api/scenarios, …
+                                └─────────────────────────┘
+```
+
+- **Frontend:** `frontend/` — static Stitch UI, deployed to Vercel
+- **Backend:** `app/main.py` — FastAPI API only, deployed to EC2
+
+Rebuild frontend after UI changes:
+
+```bash
+python scripts/build_frontend.py
 ```
 
 ## Local development
+
+**Backend (API):**
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-
-# Train once
-python -m src.pipeline
-
-# Serve (no retrain)
-python run.py
-# → http://127.0.0.1:8000
+python -m src.pipeline       # train once
+python run.py                # → http://127.0.0.1:8000/api/health
 ```
 
-To retrain on startup: `GRIDLOCK_TRAIN=true python run.py`
+**Frontend (static):**
+
+```bash
+python scripts/build_frontend.py
+npx serve frontend           # → http://localhost:3000
+```
+
+Set `window.GRIDLOCK_API = "http://127.0.0.1:8000"` in browser console for local API, or edit `frontend/js/config.js`.
 
 ## API
 
@@ -62,7 +79,30 @@ To retrain on startup: `GRIDLOCK_TRAIN=true python run.py`
 | Duration MAE | 7.8 h |
 | Hotspot recall (top-5) | 38.1% |
 
-## EC2 deployment
+## Vercel deployment (frontend)
+
+| Setting | Value |
+|---------|--------|
+| Framework Preset | **Other** |
+| Root Directory | **`frontend`** |
+| Build Command | *(empty)* |
+| Output Directory | *(empty)* |
+
+1. [vercel.com/new](https://vercel.com/new) → import repo
+2. Set **Root Directory** to `frontend`
+3. Deploy — no env vars required
+
+API calls from `*.vercel.app` are proxied to `http://65.2.35.241.nip.io/api/*` via root `vercel.json` (avoids HTTPS→HTTP mixed-content blocking).
+
+To call EC2 directly instead, set in `frontend/js/config.js`:
+
+```js
+window.GRIDLOCK_API = "https://65.2.35.241.nip.io";
+```
+
+(requires HTTPS on EC2)
+
+## EC2 deployment (backend API)
 
 ```bash
 git clone https://github.com/kisnaXD/flipkart-gridlock.git
@@ -101,16 +141,3 @@ Until ports are open, the app runs locally on the instance only (`curl http://12
 ## Team / data
 
 Built for Flipkart Gridlock. Training data: anonymized Astram event records (Bengaluru).
-
-## Optional: Vercel redirect URL
-
-The UI is served from EC2 (FastAPI + templates). You do **not** need Vercel for the app to work.
-
-If the submission form asks for a separate frontend URL, deploy this repo to [Vercel](https://vercel.com) — the included `vercel.json` redirects all traffic to the live EC2 demo.
-
-1. Go to [vercel.com/new](https://vercel.com/new) → Import [kisnaXD/flipkart-gridlock](https://github.com/kisnaXD/flipkart-gridlock)
-2. Framework preset: **Other**
-3. Deploy (no env vars needed)
-4. Submit your `*.vercel.app` URL — it forwards to `http://65.2.35.241.nip.io`
-
-**Important:** Open EC2 ports 80/443 first so the redirect target is reachable.

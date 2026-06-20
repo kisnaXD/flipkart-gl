@@ -1,17 +1,15 @@
-"""FastAPI application and map dashboard."""
+"""Gridlock API — backend only (frontend hosted on Vercel)."""
 
 from __future__ import annotations
 
+import json
+import os
 from contextlib import asynccontextmanager
-from pathlib import Path
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-
-import json
 
 from src.config import MODEL_DIR, PROCESSED_DIR
 from src.diversion import plan_diversion
@@ -21,11 +19,14 @@ from src.impact_model import ImpactModel
 from src.learning import learning_summary, load_outcomes, record_outcome
 from src.resources import recommend_resources
 
-APP_DIR = Path(__file__).resolve().parent
-
 impact_model = ImpactModel.load()
 forecast_engine = ForecastEngine.load()
 SCENARIO_CACHE: list[dict] = []
+
+CORS_ORIGINS = os.environ.get(
+    "GRIDLOCK_CORS_ORIGINS",
+    "http://localhost:3000,http://127.0.0.1:5500,http://127.0.0.1:8000",
+).split(",")
 
 
 class EventRequest(BaseModel):
@@ -180,63 +181,21 @@ async def lifespan(application: FastAPI):
     yield
 
 
-app = FastAPI(title="Gridlock Event Congestion Engine", version="1.3.0", lifespan=lifespan)
-app.mount("/static", StaticFiles(directory=str(APP_DIR / "static")), name="static")
+app = FastAPI(title="Gridlock API", version="2.0.0", lifespan=lifespan)
 
-
-STITCH_DIR = APP_DIR / "templates" / "stitch"
-
-
-def _serve_stitch(page: str) -> HTMLResponse:
-    path = STITCH_DIR / f"{page}.html"
-    if not path.exists():
-        raise HTTPException(status_code=404, detail=f"Page {page} not found")
-    html = path.read_text(encoding="utf-8")
-    shell_css = '<link rel="stylesheet" href="/static/css/gridlock-shell.css"/>'
-    shell_js = '<script src="/static/js/gridlock-nav.js"></script>'
-    if shell_css not in html:
-        html = html.replace("</head>", f"{shell_css}\n</head>")
-    if "gridlock-nav.js" not in html:
-        html = html.replace(
-            '<script src="/static/js/gridlock-app.js">',
-            f"{shell_js}\n<script src=\"/static/js/gridlock-app.js\">",
-        )
-    return HTMLResponse(content=html)
-
-
-@app.get("/", response_class=HTMLResponse)
-def dashboard():
-    return _serve_stitch("command")
-
-
-@app.get("/map", response_class=HTMLResponse)
-def map_page():
-    return _serve_stitch("map")
-
-
-@app.get("/scenarios", response_class=HTMLResponse)
-def scenarios_page():
-    return _serve_stitch("scenarios")
-
-
-@app.get("/hotspots", response_class=HTMLResponse)
-def hotspots_page():
-    return _serve_stitch("hotspots")
-
-
-@app.get("/analytics", response_class=HTMLResponse)
-def analytics_page():
-    return _serve_stitch("analytics")
-
-
-@app.get("/learning", response_class=HTMLResponse)
-def learning_page():
-    return _serve_stitch("learning")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[o.strip() for o in CORS_ORIGINS if o.strip()],
+    allow_origin_regex=r"https://.*\.vercel\.app",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "service": "gridlock"}
+    return {"status": "ok", "service": "gridlock-api"}
 
 
 @app.get("/api/analytics/summary")

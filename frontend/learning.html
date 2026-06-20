@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gridlock - Learning Loop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Custom scrollbar for data dense areas */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(140, 144, 159, 0.3); /* outline color approx */
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(140, 144, 159, 0.5);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d8e2ff",
+                        "inverse-primary": "#005ac2",
+                        "surface-container-high": "#272a31",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-container-highest": "#32353c",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "surface-variant": "#32353c",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-secondary-container": "#00424e",
+                        "on-primary": "#002e6a",
+                        "surface": "#10131a",
+                        "surface-container-low": "#191b23",
+                        "secondary-fixed": "#acedff",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#c2c6d6",
+                        "surface-bright": "#363941",
+                        "secondary": "#4cd7f6",
+                        "inverse-surface": "#e1e2ec",
+                        "on-tertiary": "#502400",
+                        "surface-tint": "#adc6ff",
+                        "surface-container": "#1d2027",
+                        "on-secondary": "#003640",
+                        "outline": "#8c909f",
+                        "on-tertiary-container": "#461f00",
+                        "on-secondary-fixed": "#001f26",
+                        "surface-dim": "#10131a",
+                        "primary-container": "#4d8eff",
+                        "tertiary": "#ffb786",
+                        "outline-variant": "#424754",
+                        "tertiary-container": "#df7412",
+                        "on-error-container": "#ffdad6",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#03b5d3",
+                        "on-primary-container": "#00285d",
+                        "on-tertiary-fixed-variant": "#723600",
+                        "on-background": "#e1e2ec",
+                        "inverse-on-surface": "#2e3038",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "primary": "#adc6ff",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "on-surface": "#e1e2ec",
+                        "error-container": "#93000a",
+                        "background": "#10131a",
+                        "on-primary-fixed-variant": "#004395",
+                        "on-tertiary-fixed": "#311400",
+                        "surface-container-lowest": "#0b0e15",
+                        "on-primary-fixed": "#001a42"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "grid-columns-mobile": "4",
+                        "gutter": "16px",
+                        "panel-padding": "20px",
+                        "grid-columns-tablet": "8",
+                        "container-margin": "24px",
+                        "unit": "4px",
+                        "grid-columns-desktop": "12"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Geist", "sans-serif"],
+                        "body-sm": ["Geist", "sans-serif"],
+                        "headline-lg": ["Geist", "sans-serif"],
+                        "label-md": ["Geist", "sans-serif"],
+                        "display-lg": ["Geist", "sans-serif"],
+                        "headline-lg-mobile": ["Geist", "sans-serif"],
+                        "mono-data": ["Geist Mono", "monospace"],
+                        "title-md": ["Geist", "sans-serif"],
+                        "body-lg": ["Geist", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "mono-data": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "title-md": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<link rel="stylesheet" href="/css/gridlock-shell.css"/>
+</head>
+<body class="bg-background text-on-background font-body-lg text-body-lg antialiased selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<!-- TopNavBar (Mobile View Anchor) -->
+<header class="lg:hidden fixed top-0 w-full z-50 flex justify-between items-center px-panel-padding h-16 bg-surface-container/80 backdrop-blur-lg border-b border-outline-variant dark:border-outline-variant flat no shadows">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary cursor-pointer hover:text-primary transition-colors duration-200">menu</span>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary">Gridlock</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer">notifications</span>
+<img alt="Operator Profile" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A close up, high resolution portrait of a professional system operator in a dimly lit control room environment. The lighting is cool and technical, reflecting off glass surfaces. The operator has a focused, neutral expression, blending seamlessly with the dark mode, data-dense aesthetics of the surrounding UI interfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVKBUARLLFhNqGgZ30nKOUIt6v2auG9d-djFHHJBboPQMt8N2CX3E2joZFSDcndatOAE6wwifieoIwIi7fc94KcborL5rpxcBCoDm_mu72oe4Vm_6YvQQgK_6387BRrRlF-RlEXk0_xkb4PaCVtFiC6NpPKtXjQ-Nw3IaV1cquDu1_RjhjEHkiRbv7jHc_Of5ec6JmtRJ-F12wPSFXeQNEX0SaEaF-uO-P8WZ6sgSCXv3v0QsMp6A4S43VdIjCqrvRkzVhBhLCIQ"/>
+</div>
+</header>
+<!-- SideNavBar (Desktop View Anchor) -->
+<aside class="hidden lg:flex flex-col h-screen p-4 border-r border-outline-variant bg-surface-container-low dark:bg-surface-container-low fixed left-0 top-0 w-[320px] z-40 flat no shadows">
+<!-- Header -->
+<div class="flex items-center gap-3 mb-8 px-2 mt-2">
+<div class="w-10 h-10 rounded bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xl">G</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-black text-primary">Gridlock</h1>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Bengaluru Ops</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 hover:text-primary transition-all duration-200 cursor-pointer group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+<span class="font-label-md text-label-md">Command</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 hover:text-primary transition-all duration-200 cursor-pointer group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">map</span>
+<span class="font-label-md text-label-md">Live Map</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 hover:text-primary transition-all duration-200 cursor-pointer group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">dynamic_feed</span>
+<span class="font-label-md text-label-md">Scenarios</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 hover:text-primary transition-all duration-200 cursor-pointer group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">local_fire_department</span>
+<span class="font-label-md text-label-md">Hotspots</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 hover:text-primary transition-all duration-200 cursor-pointer group" href="/analytics">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">insights</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-container text-on-primary-container cursor-pointer transition-all duration-200 relative" href="/learning">
+<span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-inverse-primary rounded-r-full"></span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">model_training</span>
+<span class="font-label-md text-label-md font-bold">Learning Loop</span>
+</a>
+</nav>
+<!-- CTA & Footer -->
+<div class="mt-auto space-y-4">
+<button class="w-full py-2.5 rounded-lg bg-error-container text-on-error-container font-label-md text-label-md font-bold border border-error/20 hover:bg-error hover:text-on-error transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">send</span>
+                Dispatch
+            </button>
+<div class="border-t border-outline-variant pt-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors cursor-pointer group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors cursor-pointer group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="lg:ml-[320px] pt-16 lg:pt-0 min-h-screen flex flex-col bg-background">
+<div class="p-4 md:p-6 lg:p-gutter flex-1 flex flex-col max-w-[1600px] mx-auto w-full">
+<!-- Dashboard Header -->
+<header class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+<div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-1">Post-Event Learning Loop</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Every event improves the next forecast — predicted vs actual outcomes.</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center bg-surface-container border border-outline-variant rounded-lg p-1">
+<button class="px-3 py-1 rounded bg-surface-variant text-on-surface text-label-md font-label-md">7D</button>
+<button class="px-3 py-1 rounded text-on-surface-variant hover:text-on-surface text-label-md font-label-md transition-colors">30D</button>
+<button class="px-3 py-1 rounded text-on-surface-variant hover:text-on-surface text-label-md font-label-md transition-colors">YTD</button>
+</div>
+<button class="p-2 bg-surface-container border border-outline-variant rounded-lg text-on-surface-variant hover:text-primary hover:border-primary/50 transition-all flex items-center justify-center">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</header>
+<!-- Bento Grid 2x3 -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-unit lg:gap-4 flex-1 auto-rows-min">
+<!-- 1. Event Breakdown (Donut) -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-5 flex flex-col h-[320px] relative overflow-hidden group hover:border-outline transition-colors">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">pie_chart</span>
+                            Event Breakdown
+                        </h3>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] cursor-pointer hover:text-primary">more_vert</span>
+</div>
+<div class="flex-1 flex items-center justify-center relative">
+<!-- Pseudo SVG Donut Chart -->
+<svg class="w-40 h-40 transform -rotate-90 drop-shadow-[0_0_8px_rgba(173,198,255,0.1)]" viewbox="0 0 100 100">
+<!-- Background track -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#272a31" stroke-width="12"></circle>
+<!-- Segment 1: Construction (Blue) -->
+<circle class="transition-all duration-1000 ease-out" cx="50" cy="50" fill="transparent" r="40" stroke="#adc6ff" stroke-dasharray="251.2" stroke-dashoffset="100.48" stroke-width="12"></circle> <!-- ~60% -->
+<!-- Segment 2: Public Event (Cyan) -->
+<circle class="origin-center rotate-[216deg]" cx="50" cy="50" fill="transparent" r="40" stroke="#4cd7f6" stroke-dasharray="251.2" stroke-dasharray-offset="150.72" stroke-dashoffset="175.84" stroke-width="12"></circle> <!-- ~30% -->
+<!-- Segment 3: Procession (Orange) -->
+<circle class="origin-center rotate-[324deg]" cx="50" cy="50" fill="transparent" r="40" stroke="#ffb786" stroke-dasharray="251.2" stroke-dashoffset="226.08" stroke-width="12"></circle> <!-- ~10% -->
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span id="gl-learning-records" class="font-mono-data text-[24px] font-bold text-on-surface">—</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Total</span>
+</div>
+</div>
+<div class="mt-4 flex flex-col gap-2">
+<div class="flex items-center justify-between font-label-md text-label-md text-on-surface-variant">
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary"></span> Construction</div>
+<span class="font-mono-data">60%</span>
+</div>
+<div class="flex items-center justify-between font-label-md text-label-md text-on-surface-variant">
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-secondary"></span> Public Event</div>
+<span class="font-mono-data">30%</span>
+</div>
+<div class="flex items-center justify-between font-label-md text-label-md text-on-surface-variant">
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-tertiary"></span> Procession</div>
+<span class="font-mono-data">10%</span>
+</div>
+</div>
+</div>
+<!-- 2. Planned vs Unplanned (Gauge Split) -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-5 flex flex-col h-[320px] relative overflow-hidden group hover:border-outline transition-colors">
+<div class="flex justify-between items-start mb-6">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">rule</span>
+                            Anomaly Ratio
+                        </h3>
+</div>
+<div class="flex-1 flex flex-col justify-center gap-8">
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Planned</span>
+<span class="font-display-lg text-display-lg text-primary tracking-tighter">94%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full shadow-[0_0_10px_rgba(173,198,255,0.4)]" style="width: 94%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-md text-label-md text-error uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span> Unplanned
+                                </span>
+<span class="font-headline-md text-headline-md text-error font-mono-data">06%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error rounded-full shadow-[0_0_8px_rgba(255,180,171,0.4)]" style="width: 6%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Model Accuracy (Radial Gauge) -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-5 flex flex-col h-[320px] relative overflow-hidden group hover:border-outline transition-colors">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary-container">psychology</span>
+                            Predictive Accuracy
+                        </h3>
+</div>
+<div class="flex-1 flex items-center justify-center relative mt-4">
+<svg class="w-full max-w-[240px]" viewbox="0 0 200 120">
+<!-- Track -->
+<path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#272a31" stroke-linecap="round" stroke-width="16"></path>
+<!-- Fill - represents 69% -->
+<!-- arc length approx 251. 69% of 251 = 173 -->
+<path class="drop-shadow-[0_0_12px_rgba(3,181,211,0.3)]" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#03b5d3" stroke-dasharray="251" stroke-dashoffset="78" stroke-linecap="round" stroke-width="16"></path>
+</svg>
+<div class="absolute bottom-4 flex flex-col items-center">
+<span id="gl-tier-accuracy" class="font-display-lg text-[56px] leading-[56px] font-bold text-on-surface tracking-tighter">69<span class="text-[32px] text-on-surface-variant">%</span></span>
+<span class="font-label-md text-label-md text-secondary mt-1 bg-secondary/10 px-2 py-0.5 rounded border border-secondary/20">Needs Recalibration</span>
+</div>
+</div>
+</div>
+<!-- 4. Duration Prediction (Stat + Sparkline) -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-5 flex flex-col h-[320px] relative overflow-hidden group hover:border-outline transition-colors">
+<div class="flex justify-between items-start mb-6">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">timer</span>
+                            Duration Error (MAE)
+                        </h3>
+<div class="flex items-center gap-1 text-error text-label-md font-label-md bg-error/10 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +1.2h
+                        </div>
+</div>
+<div class="flex flex-col gap-1 mb-auto">
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-primary tracking-tighter">7.8</span>
+<span class="font-headline-md text-headline-md text-on-surface-variant">hrs</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Mean Absolute Error across all incident types</span>
+</div>
+<!-- Sparkline -->
+<div class="h-24 w-full relative mt-4 border-b border-l border-outline-variant/30 pb-1 pl-1">
+<svg class="w-full h-full preserve-aspect-ratio-none opacity-80" preserveaspectratio="none" viewbox="0 0 100 40">
+<defs>
+<lineargradient id="gradient-area" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#adc6ff" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#adc6ff" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,30 L10,25 L20,28 L30,15 L40,22 L50,10 L60,18 L70,5 L80,12 L90,2 L100,8 L100,40 L0,40 Z" fill="url(#gradient-area)"></path>
+<path class="drop-shadow-[0_0_4px_rgba(173,198,255,0.5)]" d="M0,30 L10,25 L20,28 L30,15 L40,22 L50,10 L60,18 L70,5 L80,12 L90,2 L100,8" fill="none" stroke="#adc6ff" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Hover point simulation -->
+<circle class="animate-pulse" cx="70" cy="5" fill="#10131a" r="3" stroke="#adc6ff" stroke-width="2"></circle>
+</svg>
+<!-- Grid lines pseudo -->
+<div class="absolute inset-0 flex justify-between pointer-events-none opacity-10">
+<div class="w-px h-full bg-on-surface"></div>
+<div class="w-px h-full bg-on-surface"></div>
+<div class="w-px h-full bg-on-surface"></div>
+<div class="w-px h-full bg-on-surface"></div>
+</div>
+</div>
+</div>
+<!-- 5. Top Corridors (Horizontal Bar) -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-5 flex flex-col h-[320px] relative overflow-hidden group hover:border-outline transition-colors lg:col-span-2">
+<div class="flex justify-between items-start mb-6">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary">route</span>
+                            High-Risk Corridors
+                        </h3>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">By Incident Count</span>
+</div>
+<div class="flex-1 flex flex-col gap-4 overflow-y-auto pr-2">
+<!-- Bar 1 -->
+<div class="flex items-center gap-4 group/bar">
+<div class="w-24 shrink-0 font-label-md text-label-md text-on-surface truncate" title="Outer Ring Rd">Outer Ring Rd</div>
+<div class="flex-1 h-6 bg-surface-container-highest rounded overflow-hidden relative">
+<div class="h-full bg-primary-container/80 group-hover/bar:bg-primary-container transition-colors rounded-r" style="width: 85%;"></div>
+</div>
+<div class="w-12 text-right font-mono-data text-mono-data text-on-surface-variant group-hover/bar:text-primary transition-colors">412</div>
+</div>
+<!-- Bar 2 -->
+<div class="flex items-center gap-4 group/bar">
+<div class="w-24 shrink-0 font-label-md text-label-md text-on-surface truncate" title="Hosur Road">Hosur Road</div>
+<div class="flex-1 h-6 bg-surface-container-highest rounded overflow-hidden relative">
+<div class="h-full bg-secondary-container/80 group-hover/bar:bg-secondary-container transition-colors rounded-r" style="width: 65%;"></div>
+</div>
+<div class="w-12 text-right font-mono-data text-mono-data text-on-surface-variant group-hover/bar:text-secondary transition-colors">289</div>
+</div>
+<!-- Bar 3 -->
+<div class="flex items-center gap-4 group/bar">
+<div class="w-24 shrink-0 font-label-md text-label-md text-on-surface truncate" title="Silk Board Jn">Silk Board Jn</div>
+<div class="flex-1 h-6 bg-surface-container-highest rounded overflow-hidden relative">
+<div class="h-full bg-tertiary-container/80 group-hover/bar:bg-tertiary-container transition-colors rounded-r" style="width: 45%;"></div>
+</div>
+<div class="w-12 text-right font-mono-data text-mono-data text-on-surface-variant group-hover/bar:text-tertiary transition-colors">156</div>
+</div>
+<!-- Bar 4 -->
+<div class="flex items-center gap-4 group/bar opacity-70">
+<div class="w-24 shrink-0 font-label-md text-label-md text-on-surface truncate" title="Tumkur Road">Tumkur Road</div>
+<div class="flex-1 h-6 bg-surface-container-highest rounded overflow-hidden relative">
+<div class="h-full bg-outline-variant/60 group-hover/bar:bg-outline-variant transition-colors rounded-r" style="width: 30%;"></div>
+</div>
+<div class="w-12 text-right font-mono-data text-mono-data text-on-surface-variant group-hover/bar:text-on-surface transition-colors">98</div>
+</div>
+<!-- Bar 5 -->
+<div class="flex items-center gap-4 group/bar opacity-50">
+<div class="w-24 shrink-0 font-label-md text-label-md text-on-surface truncate" title="Old Madras Rd">Old Madras Rd</div>
+<div class="flex-1 h-6 bg-surface-container-highest rounded overflow-hidden relative">
+<div class="h-full bg-outline-variant/40 group-hover/bar:bg-outline-variant transition-colors rounded-r" style="width: 20%;"></div>
+</div>
+<div class="w-12 text-right font-mono-data text-mono-data text-on-surface-variant group-hover/bar:text-on-surface transition-colors">64</div>
+</div>
+</div>
+</div>
+<!-- 6. Temporal Heatmap -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-5 flex flex-col h-[320px] relative overflow-hidden group hover:border-outline transition-colors lg:col-span-3">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">grid_view</span>
+                            Temporal Density Analysis
+                        </h3>
+<div class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
+                            Low <div class="flex gap-0.5"><div class="w-3 h-3 bg-primary-fixed/10"></div><div class="w-3 h-3 bg-primary-fixed/40"></div><div class="w-3 h-3 bg-primary-fixed/70"></div><div class="w-3 h-3 bg-inverse-primary"></div></div> High
+                        </div>
+</div>
+<div class="flex-1 flex w-full relative">
+<!-- Y Axis (Days) -->
+<div class="flex flex-col justify-between py-4 pr-2 border-r border-outline-variant/30 font-label-md text-label-md text-on-surface-variant text-right w-10">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+<!-- Heatmap Grid Container -->
+<div class="flex-1 pl-2 flex flex-col justify-between">
+<!-- Matrix rows -->
+<!-- Row 1: Mon -->
+<div class="flex justify-between gap-0.5 h-6">
+<div class="flex-1 bg-primary-fixed/10 rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all"></div>
+<div class="flex-1 bg-primary-fixed/10 rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all"></div>
+<div class="flex-1 bg-primary-fixed/20 rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all"></div>
+<div class="flex-1 bg-primary-fixed/40 rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all"></div>
+<div class="flex-1 bg-primary-fixed/80 rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all relative group/cell"><div class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-surface-container text-on-surface text-xs p-1 rounded opacity-0 group-hover/cell:opacity-100 pointer-events-none whitespace-nowrap z-10 border border-outline-variant shadow-lg">08:00 - High</div></div>
+<div class="flex-1 bg-inverse-primary rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all shadow-[0_0_8px_rgba(0,90,194,0.5)]"></div>
+<div class="flex-1 bg-primary-fixed/60 rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all"></div>
+<div class="flex-1 bg-primary-fixed/30 rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all"></div>
+<div class="flex-1 bg-primary-fixed/20 rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all"></div>
+<div class="flex-1 bg-primary-fixed/50 rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all"></div>
+<div class="flex-1 bg-inverse-primary rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all shadow-[0_0_8px_rgba(0,90,194,0.5)]"></div>
+<div class="flex-1 bg-primary-fixed/30 rounded-sm hover:ring-1 ring-primary cursor-pointer transition-all"></div>
+</div>
+<!-- Row 2: Tue -->
+<div class="flex justify-between gap-0.5 h-6">
+<div class="flex-1 bg-primary-fixed/5 rounded-sm"></div><div class="flex-1 bg-primary-fixed/10 rounded-sm"></div><div class="flex-1 bg-primary-fixed/30 rounded-sm"></div><div class="flex-1 bg-primary-fixed/50 rounded-sm"></div><div class="flex-1 bg-primary-fixed/90 rounded-sm"></div><div class="flex-1 bg-inverse-primary rounded-sm"></div><div class="flex-1 bg-primary-fixed/40 rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div><div class="flex-1 bg-primary-fixed/30 rounded-sm"></div><div class="flex-1 bg-primary-fixed/60 rounded-sm"></div><div class="flex-1 bg-inverse-primary rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div>
+</div>
+<!-- Row 3: Wed -->
+<div class="flex justify-between gap-0.5 h-6">
+<div class="flex-1 bg-primary-fixed/10 rounded-sm"></div><div class="flex-1 bg-primary-fixed/10 rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div><div class="flex-1 bg-primary-fixed/60 rounded-sm"></div><div class="flex-1 bg-inverse-primary rounded-sm shadow-[0_0_8px_rgba(0,90,194,0.5)]"></div><div class="flex-1 bg-primary-fixed/80 rounded-sm"></div><div class="flex-1 bg-primary-fixed/30 rounded-sm"></div><div class="flex-1 bg-primary-fixed/10 rounded-sm"></div><div class="flex-1 bg-primary-fixed/40 rounded-sm"></div><div class="flex-1 bg-primary-fixed/80 rounded-sm"></div><div class="flex-1 bg-primary-fixed/90 rounded-sm"></div><div class="flex-1 bg-primary-fixed/10 rounded-sm"></div>
+</div>
+<!-- Row 4: Thu -->
+<div class="flex justify-between gap-0.5 h-6">
+<div class="flex-1 bg-primary-fixed/5 rounded-sm"></div><div class="flex-1 bg-primary-fixed/10 rounded-sm"></div><div class="flex-1 bg-primary-fixed/40 rounded-sm"></div><div class="flex-1 bg-primary-fixed/70 rounded-sm"></div><div class="flex-1 bg-inverse-primary rounded-sm"></div><div class="flex-1 bg-primary-fixed/60 rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div><div class="flex-1 bg-primary-fixed/30 rounded-sm"></div><div class="flex-1 bg-primary-fixed/50 rounded-sm"></div><div class="flex-1 bg-inverse-primary rounded-sm shadow-[0_0_8px_rgba(0,90,194,0.5)]"></div><div class="flex-1 bg-primary-fixed/80 rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div>
+</div>
+<!-- Row 5: Fri -->
+<div class="flex justify-between gap-0.5 h-6">
+<div class="flex-1 bg-primary-fixed/10 rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div><div class="flex-1 bg-primary-fixed/30 rounded-sm"></div><div class="flex-1 bg-primary-fixed/60 rounded-sm"></div><div class="flex-1 bg-primary-fixed/90 rounded-sm"></div><div class="flex-1 bg-primary-fixed/80 rounded-sm"></div><div class="flex-1 bg-primary-fixed/50 rounded-sm"></div><div class="flex-1 bg-primary-fixed/60 rounded-sm"></div><div class="flex-1 bg-primary-fixed/90 rounded-sm"></div><div class="flex-1 bg-inverse-primary rounded-sm shadow-[0_0_8px_rgba(0,90,194,0.8)]"></div><div class="flex-1 bg-inverse-primary rounded-sm"></div><div class="flex-1 bg-primary-fixed/40 rounded-sm"></div>
+</div>
+<!-- Row 6: Sat -->
+<div class="flex justify-between gap-0.5 h-6">
+<div class="flex-1 bg-primary-fixed/30 rounded-sm"></div><div class="flex-1 bg-primary-fixed/40 rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div><div class="flex-1 bg-primary-fixed/10 rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div><div class="flex-1 bg-primary-fixed/40 rounded-sm"></div><div class="flex-1 bg-primary-fixed/60 rounded-sm"></div><div class="flex-1 bg-primary-fixed/80 rounded-sm"></div><div class="flex-1 bg-primary-fixed/90 rounded-sm"></div><div class="flex-1 bg-primary-fixed/70 rounded-sm"></div><div class="flex-1 bg-primary-fixed/40 rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div>
+</div>
+<!-- Row 7: Sun -->
+<div class="flex justify-between gap-0.5 h-6">
+<div class="flex-1 bg-primary-fixed/20 rounded-sm"></div><div class="flex-1 bg-primary-fixed/10 rounded-sm"></div><div class="flex-1 bg-primary-fixed/10 rounded-sm"></div><div class="flex-1 bg-primary-fixed/5 rounded-sm"></div><div class="flex-1 bg-primary-fixed/10 rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div><div class="flex-1 bg-primary-fixed/40 rounded-sm"></div><div class="flex-1 bg-primary-fixed/50 rounded-sm"></div><div class="flex-1 bg-primary-fixed/60 rounded-sm"></div><div class="flex-1 bg-primary-fixed/40 rounded-sm"></div><div class="flex-1 bg-primary-fixed/20 rounded-sm"></div><div class="flex-1 bg-primary-fixed/10 rounded-sm"></div>
+</div>
+<!-- X Axis (Hours) - simplified for 12 blocks -->
+<div class="flex justify-between font-label-md text-label-md text-on-surface-variant pt-2 border-t border-outline-variant/30 mt-2">
+<span class="w-0 flex-1 text-center">00</span><span class="w-0 flex-1 text-center">02</span><span class="w-0 flex-1 text-center">04</span><span class="w-0 flex-1 text-center">06</span><span class="w-0 flex-1 text-center">08</span><span class="w-0 flex-1 text-center">10</span><span class="w-0 flex-1 text-center">12</span><span class="w-0 flex-1 text-center">14</span><span class="w-0 flex-1 text-center">16</span><span class="w-0 flex-1 text-center">18</span><span class="w-0 flex-1 text-center">20</span><span class="w-0 flex-1 text-center">22</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Dashboard Footer -->
+<footer class="mt-8 mb-4 border-t border-outline-variant/30 pt-4 flex flex-col md:flex-row items-center justify-between gap-4 font-label-md text-label-md text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">database</span>
+<span>Trained on Astram dataset</span>
+</div>
+<div>
+<span>Nov 2023 – Apr 2024</span>
+</div>
+</footer>
+</div>
+</main>
+<script>window.GRIDLOCK_PAGE="learning";</script><script src="/js/config.js"></script>
+<script src="/js/gridlock-nav.js"></script>
+<script src="/js/gridlock-app.js"></script></body></html>

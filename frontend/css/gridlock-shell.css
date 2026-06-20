@@ -1,0 +1,128 @@
+/* Gridlock unified shell — consistent nav + map fixes */
+
+body.gl-shell {
+  padding-top: 64px;
+}
+
+@media (max-width: 767px) {
+  body.gl-shell {
+    padding-top: 104px;
+  }
+}
+
+/* Hide Stitch's inconsistent sidebars / duplicate navs */
+body.gl-shell aside.hidden,
+body.gl-shell nav.hidden.lg\:flex,
+body.gl-shell nav.hidden.md\:flex,
+body.gl-shell nav.md\:hidden.fixed,
+body.gl-shell nav.lg\:hidden.fixed {
+  display: none !important;
+}
+
+body.gl-shell main,
+body.gl-shell .gl-main-offset {
+  margin-left: 0 !important;
+  padding-top: 0 !important;
+}
+
+body.gl-shell .lg\:ml-\[320px\] {
+  margin-left: 0 !important;
+}
+
+body.gl-shell .mt-16 {
+  margin-top: 0 !important;
+}
+
+/* Leaflet */
+#gl-leaflet-map {
+  z-index: 1;
+  background: #0b0e15;
+}
+
+.leaflet-container {
+  font-family: Inter, system-ui, sans-serif;
+  background: #0b0e15;
+}
+
+.gl-map-marker {
+  background: transparent !important;
+  border: none !important;
+  pointer-events: auto !important;
+}
+
+.gl-map-marker.epicenter {
+  width: 28px !important;
+  height: 28px !important;
+  margin-left: -14px !important;
+  margin-top: -14px !important;
+  border-radius: 50%;
+  background: #33b5e5 !important;
+  border: 3px solid #fff !important;
+  box-shadow: 0 0 0 4px rgba(51, 181, 229, 0.45), 0 0 20px rgba(51, 181, 229, 0.6);
+}
+
+.gl-map-marker.barricade {
+  width: 30px !important;
+  height: 30px !important;
+  margin-left: -15px !important;
+  margin-top: -15px !important;
+  border-radius: 8px;
+  background: #ff4081 !important;
+  color: #fff !important;
+  font-weight: 800;
+  font-size: 13px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff !important;
+  box-shadow: 0 0 12px rgba(255, 64, 129, 0.5);
+  cursor: pointer;
+}
+
+.leaflet-popup-content-wrapper {
+  background: rgba(16, 19, 26, 0.95);
+  color: #e1e2ec;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+}
+
+.leaflet-popup-tip {
+  background: rgba(16, 19, 26, 0.95);
+}
+
+/* Map overlays: let clicks pass through empty glass areas */
+.gl-map-overlay {
+  pointer-events: none;
+}
+
+.gl-map-overlay > * {
+  pointer-events: auto;
+}
+
+/* Unified top nav */
+#gl-unified-nav a.gl-nav-active {
+  color: #adc6ff;
+  border-bottom: 2px solid #adc6ff;
+  padding-bottom: 2px;
+}
+
+#gl-unified-nav a.gl-nav-link {
+  color: #c2c6d6;
+  transition: color 0.15s;
+}
+
+#gl-unified-nav a.gl-nav-link:hover {
+  color: #adc6ff;
+}
+
+.glow-active {
+  box-shadow: 0 0 15px rgba(173, 198, 255, 0.25);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #424754;
+  border-radius: 6px;
+}
